@@ -4,7 +4,7 @@ A probability-of-default (PD) scorecard for Lending Club 36-month loans, with an
 quarterly monitoring workflow that tracks stability, discrimination and calibration, flags
 each check Red / Amber / Green, and feeds a Tableau dashboard.
 
-**Dashboard:** _add your Tableau Public link_
+**Dashboard:** [Tableau Public: Credit Risk Model Monitoring](https://public.tableau.com/views/CreditRiskModelMonitoring/Dashboard)
 **Report:** [reports/model_monitoring_report.md](reports/model_monitoring_report.md)
 
 ## What it does
@@ -22,7 +22,10 @@ each check Red / Amber / Green, and feeds a Tableau dashboard.
    (and on demand) and commits the refreshed outputs.
 
 ## Key results
-_Fill in after your run: development Gini, which quarters breached, and the main driver._
+- 589,488 Lending Club 36-month loans; scorecard trained on 143,892 loans (2012-2013) with 8 of 16 features selected by IV.
+- Hold-out Gini 0.299 (AUC 0.650, KS 0.218).
+- PSI stayed below 0.01 and CSI was green for every feature in all 8 quarters, yet the model under-predicted defaults by 10-20% from 2014Q4 (actual default rate up to 15.4% vs about 12.5% predicted).
+- Diagnosis: calibration drift, not population shift. Escalated to Red under the two-consecutive-Ambers rule; recommendation is to recalibrate the PD levels rather than redevelop the model.
 
 ## Run it yourself
 ```bash
