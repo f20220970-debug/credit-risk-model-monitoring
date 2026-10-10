@@ -1,0 +1,10 @@
+feature,coefficient,p_value
+const,-1.9286,0.0
+fico_range_low,-0.7836,0.0
+annual_inc,-0.7461,0.0
+dti,-0.6378,0.0
+home_ownership,-0.4449,0.0
+revol_util,-0.2959,0.0
+purpose,-0.9818,0.0
+credit_hist_years,-0.2667,0.0001
+inq_last_6mths,-1.116,0.0

@@ -1,0 +1,37 @@
+name: Model monitoring
+
+on:
+  schedule:
+    - cron: "0 6 1 * *"     # 06:00 UTC on the 1st of every month
+  workflow_dispatch:         # lets you run it by hand from the Actions tab
+
+permissions:
+  contents: write            # needed to commit the refreshed outputs
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install packages
+        run: pip install -r requirements.txt
+
+      - name: Run monitoring
+        run: python src/monitor.py
+
+      - name: Write report
+        run: python src/report.py
+
+      - name: Commit refreshed outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add outputs reports
+          git diff --cached --quiet || git commit -m "Monitoring run $(date -u +'%Y-%m-%d')"
+          git push
