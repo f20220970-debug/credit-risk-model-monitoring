@@ -1,0 +1,4 @@
+scenario,weight,avg_lifetime_pd,stage2_share,ecl,coverage
+baseline,0.6,0.1497,0.0696,170497203.0719,0.047
+adverse,0.3,0.2056,0.2733,341443341.3074,0.0942
+severe,0.1,0.2749,0.557,649605601.0006,0.1792

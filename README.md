@@ -27,6 +27,15 @@ each check Red / Amber / Green, and feeds a Tableau dashboard.
 - PSI stayed below 0.01 and CSI was green for every feature in all 8 quarters, yet the model under-predicted defaults by 10-20% from 2014Q4 (actual default rate up to 15.4% vs about 12.5% predicted).
 - Diagnosis: calibration drift, not population shift. Escalated to Red under the two-consecutive-Ambers rule; recommendation is to recalibrate the PD levels rather than redevelop the model.
 
+## Expected credit loss and stress testing (src/run_ecl.py)
+IFRS 9-style ECL (PD x LGD x EAD) on the 2015 book using the trained scorecard: stage 1 uses 12-month PD, stage 2 (lifetime PD at least 2x the average, a proxy for a significant increase in credit risk) uses lifetime PD. LGD 85% (unsecured), EAD = original loan amount, no discounting: deliberately simple and conservative.
+- Current book: 283,026 loans, $3.62bn exposure. Stage 2 is 7.0% of loans but 22% of ECL (coverage 24.5% vs 3.8%).
+- Model-risk overlay: the +0.2 log-odds recalibration recommended by the monitoring raises ECL from $131m to $170m (+31%).
+- Back-test: realised losses were 1.13x (2014) and 1.27x (2015) the model's expected loss, but 0.96x and 1.07x after recalibration, so the overlay closes most of the gap.
+- Stress tests: baseline $170m (4.7% coverage), adverse $341m (9.4%), severe $650m (17.9%, 56% of loans in stage 2); probability-weighted (60/30/10) $270m (7.4%).
+- Largest ECL pocket: debt consolidation loans to renters (70,911 loans, 10.5% coverage).
+SQL: sql/ecl_queries.sql (tables ecl_totals, ecl_stages, ecl_scenarios, ecl_aggregation, ecl_backtest in outputs/monitoring.db).
+
 ## Run it yourself
 ```bash
 python3 -m venv .venv
